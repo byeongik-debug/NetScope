@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "NetScope",
+    "slug": "netscope",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.byungik.netscope",
+      "infoPlist": {
+        "NSLocalNetworkUsageDescription": "NetScope uses network access to measure connection quality."
+      }
+    },
+    "android": {
+      "package": "com.byungik.netscope"
+    }
+  }
+}
