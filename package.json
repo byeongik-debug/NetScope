@@ -1,0 +1,10 @@
+{
+  "name": "netscope",
+  "private": true,
+  "scripts": {
+    "mobile": "npm --prefix mobile start",
+    "mobile:check": "npm --prefix mobile run typecheck",
+    "backend": "python -m uvicorn app.main:app --reload --app-dir backend",
+    "test": "python -m pytest backend/tests && npm run mobile:check"
+  }
+}

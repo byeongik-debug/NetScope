@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "NetScope",
+    "slug": "netscope",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "ios": {"supportsTablet": true},
+    "android": {"package": "com.netscope.mobile"}
+  }
+}

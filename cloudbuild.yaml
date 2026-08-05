@@ -1,0 +1,22 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args: ['build', '-t', '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/netscope-api:$COMMIT_SHA', './backend']
+  - name: gcr.io/cloud-builders/docker
+    args: ['push', '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/netscope-api:$COMMIT_SHA']
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - netscope-api
+      - --image=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/netscope-api:$COMMIT_SHA
+      - --region=${_REGION}
+      - --platform=managed
+      - --allow-unauthenticated
+      - --set-secrets=NETSCOPE_SECRET_KEY=netscope-secret-key:latest,NETSCOPE_DATABASE_URL=netscope-database-url:latest
+substitutions:
+  _REGION: asia-northeast3
+  _REPOSITORY: netscope
+images:
+  - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/netscope-api:$COMMIT_SHA'
+
