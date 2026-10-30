@@ -68,6 +68,8 @@ def test_core_api():
         survey_detail = client.get(f"/api/v1/wifi-surveys/{survey_id}", headers=headers).json()
         assert survey_detail["placements"][0]["points"][0]["locationName"] == "2층 작업실"
         assert survey_detail["placements"][0]["points"][0]["diagnostic"]["p95Latency"] == 29.8
+        assert client.delete(f"/api/v1/wifi-surveys/{survey_id}", headers=headers).status_code == 204
+        assert client.get(f"/api/v1/wifi-surveys/{survey_id}", headers=headers).status_code == 404
         history = client.get("/api/v1/client-diagnostics", headers=headers).json()
         assert history[-1]["qualityScore"] == 98
 

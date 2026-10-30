@@ -4,6 +4,7 @@ import {ClientDiagnostic, WifiSurveyDetail, WifiSurveyPlacement, WifiSurveyPoint
 export const wifiSurveyService = {
   list: () => request<WifiSurveySummary[]>('/api/v1/wifi-surveys'),
   create: (name: string) => request<WifiSurveyDetail>('/api/v1/wifi-surveys', {method: 'POST', body: JSON.stringify({name})}),
+  remove: (id: number) => request<void>(`/api/v1/wifi-surveys/${id}`, {method: 'DELETE'}),
   detail: (id: number) => request<WifiSurveyDetail>(`/api/v1/wifi-surveys/${id}`),
   addPlacement: (surveyId: number, name: string) => request<WifiSurveyPlacement>(`/api/v1/wifi-surveys/${surveyId}/placements`, {method: 'POST', body: JSON.stringify({name})}),
   addPoint: (placementId: number, locationName: string, floor: string, diagnostic: ClientDiagnostic) => {

@@ -240,6 +240,18 @@ def create_wifi_survey(payload: WifiSurveyCreate, db: Session = Depends(get_db),
     db.add(item); db.commit(); db.refresh(item)
     return wifi_survey_detail_data(item, db)
 
+@router.delete("/wifi-surveys/{survey_id}", status_code=204)
+def delete_wifi_survey(survey_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    survey = db.query(WifiSurvey).filter(WifiSurvey.id == survey_id, WifiSurvey.user_id == user.id).first()
+    if not survey: raise HTTPException(404, "Wi-Fi survey not found")
+    placement_ids = [row[0] for row in db.query(WifiSurveyPlacement.id).filter(WifiSurveyPlacement.survey_id == survey.id).all()]
+    if placement_ids:
+        db.query(WifiSurveyPoint).filter(WifiSurveyPoint.placement_id.in_(placement_ids)).delete(synchronize_session=False)
+        db.query(WifiSurveyPlacement).filter(WifiSurveyPlacement.id.in_(placement_ids)).delete(synchronize_session=False)
+    db.delete(survey)
+    db.commit()
+    return Response(status_code=204)
+
 @router.get("/wifi-surveys/{survey_id}")
 def get_wifi_survey(survey_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     item = db.query(WifiSurvey).filter(WifiSurvey.id == survey_id, WifiSurvey.user_id == user.id).first()
